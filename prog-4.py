@@ -77,14 +77,44 @@ def dessiner_afficheur(sortie_CD4511):
     return
 
 def composant_CD4511(entree):
-    return np.array([0, 0, 0, 0, 0, 0, 0])
+    tdv = np.array([
+        [1, 1, 1, 1, 1, 1, 0],
+        [0, 1, 1, 0, 0, 0, 0],
+        [1, 1, 0, 1, 1, 0, 1],
+        [1, 1, 1, 1, 0, 0, 1],
+        [0, 1, 1, 0, 0, 1, 1],
+        [1, 0, 1, 1, 0, 1, 1],
+        [1, 0, 1, 1, 1, 1, 1],
+        [1, 1, 1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 0, 1, 1],
+    ])
+    
+    valeur = 0
+    i = 3
+    
+    for bit in entree:
+        valeur += bit * 2**i
+        i -= 1
+    
+    return tdv[valeur]
 
 def sortie_memorisee():
-    return np.array([0, 0, 0, 0])
+    result = []
+    reste = valeur_memorisee
+    
+    while reste is not 0:
+        result.append(reste % 2)
+        reste //= 2
+    
+    while len(result) < 4:
+        result.append(0)
+    result.reverse()
+    
+    return np.array(result)
 
 def gerer_click():
     return 0
-
 
 def connexion_bouton(sortie_bouton):
     return
@@ -126,8 +156,7 @@ image_CD4511 = pygame.image.load('images/CD4511.png').convert_alpha(fenetre)
 image_CD4028 = pygame.image.load('images/CD4028.png').convert_alpha(fenetre)
 image_bouton = pygame.image.load('images/bouton.png').convert_alpha(fenetre)
 couleur_fond = GRIS
-
-
+valeur_memorisee = 0
 
 # Boucle principale
 
